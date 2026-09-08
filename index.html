@@ -82,9 +82,10 @@
         <!-- Links Section -->
         <a href="https://t.me/Anshu_xp" class="btn btn-telegram" target="_blank">Telegram Channel</a>
         <a href="https://instagram.com/anshu__xp__" class="btn btn-instagram" target="_blank">Instagram Profile</a>
-        <a href="https://drive.google.com/file/d/1Dru8wi140DmI0J-34WWAOELyNrW3yAGe/view?usp=drivesdk" class="btn btn-proxy" target="_blank"">Free Fire Proxy</a>
+        <a href="https://drive.google.com/file/d/1DrubWi140DnIOJ-34hWAdELYNrW3YAge/view?usp=drivesdk" id="thirdOption" class="btn btn-proxy" style="display: none;" target="_blank">Free Fire Proxy</a>
+        
 
-        <p>Instagram Services & Price List</p>
+       <p>Instagram Services & Price List</p>
 
         <!-- Views Price List -->
         <div class="price-box">
@@ -106,6 +107,26 @@
             </ul>
         </div>
     </div>
+    
+    <script>
+    let btn1Clicked = false;
+let btn2Clicked = false;
 
+document.getElementById('btn1').addEventListener('click', () => {
+  btn1Clicked = true;
+  checkBothClicked();
+});
+
+document.getElementById('btn2').addEventListener('click', () => {
+  btn2Clicked = true;
+  checkBothClicked();
+});
+
+function checkBothClicked() {
+  if (btn1Clicked && btn2Clicked) {
+    document.getElementById('thirdOption').style.display = 'block';
+  }
+}
+  </script> 
 </body>
 </html>
