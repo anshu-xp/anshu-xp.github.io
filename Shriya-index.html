@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सिया साइबर पॉइंट | Siya Cyber Point</title>
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --secondary: #f39c12;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #1a365d);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: #cbd5e1;
+            font-size: 1rem;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 1.5rem auto 0;
+            padding: 0 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            outline: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .category-title {
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+            border-left: 5px solid var(--secondary);
+            padding-left: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .card-btn {
+            align-self: flex-start;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Modal / Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 550px;
+            width: 100%;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--text-light);
+        }
+
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-right: 2rem;
+        }
+
+        .modal-section {
+            margin-bottom: 1.2rem;
+        }
+
+        .modal-section h4 {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-section ul {
+            list-style-type: none;
+        }
+
+        .modal-section ul li {
+            position: relative;
+            padding-left: 1.4rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .modal-section ul li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-size: 0.85rem;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>सिया साइबर पॉइंट</h1>
+        <p>ऑनलाइन नागरिक, बैंकिंग एवं सरकारी योजनाओं का एक विश्वसनीय केंद्र</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="सेवा खोजें (जैसे: आधार, पैन, आय प्रमाण पत्र)..." onkeyup="filterServices()">
+        </div>
+    </header>
+
+    <main class="container" id="servicesContainer">
+        <!-- Categories and Cards rendered by JavaScript -->
+    </main>
+
+    <!-- Modal Popup -->
+    <div class="modal" id="serviceModal" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h2 id="modalTitle"></h2>
+            
+            <div class="modal-section">
+                <h4>उपलब्ध सुविधाएं</h4>
+                <p id="modalFacility" style="color: var(--text-light); font-size: 0.95rem;"></p>
+            </div>
+
+            <div class="modal-section">
+                <h4>आवश्यक दस्तावेज़</h4>
+                <ul id="modalDocs"></ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© सिया साइबर पॉइंट | सभी नागरिक एवं डिजिटल सेवाओं के लिए संपर्क करें</p>
+    </footer>
+
+    <script>
+        const servicesData = [
+            {
+                category: "सरकारी और नागरिक सेवाएं",
+                items: [
+                    {
+                        name: "आधार कार्ड सेवाएं",
+                        desc: "पता/मोबाइल अपडेट एवं ई-आधार कलर प्रिंट",
+                        facility: "बायोमेट्रिक अपडेट की सलाह, ऑनलाइन डेमोग्राफिक सुधार (नाम, पता), लेमिनेशन सहित पीवीसी/कलर प्रिंट।",
+                        docs: ["पुराना आधार नंबर या स्लिप", "पहचान पत्र (वोटर कार्ड/पैन)", "पते का प्रमाण (बिजली बिल/राशन कार्ड)", "रजिस्टर्ड मोबाइल नंबर"]
+                    },
+                    {
+                        name: "पैन कार्ड (PAN Card)",
+                        desc: "नया आवेदन, करेक्शन एवं री-प्रिंट",
+                        facility: "नया पैन कार्ड 3 से 7 दिनों में ई-पैन जनरेट, फिजिकल कार्ड घर के पते पर डिलीवरी, नाम व जन्मतिथि सुधार।",
+                        docs: ["आधार कार्ड", "2 पासपोर्ट साइज फोटो", "हस्ताक्षर (Signature)", "मोबाइल नंबर व ईमेल आईडी"]
+                    },
+                    {
+                        name: "वोटर आईडी कार्ड",
+                        desc: "नया वोटर कार्ड व संशोधन",
+                        facility: "नए मतदाता का नाम जोड़ना, पते में बदलाव, वोटर लिस्ट में नाम खोजना, डिजिटल एपिक डाउनलोड।",
+                        docs: ["आधार कार्ड", "उम्र प्रमाण पत्र (10वीं मार्कशीट/जन्म प्रमाण)", "1 पासपोर्ट फोटो", "परिवार के किसी सदस्य का वोटर नंबर"]
+                    },
+                    {
+                        name: "आय, जाति एवं निवास प्रमाण पत्र",
+                        desc: "RTPS ऑनलाइन आवेदन",
+                        facility: "ब्लॉक स्तर से निर्गत प्रमाण पत्र, तत्काल व सामान्य आवेदन, प्रमाण पत्र डाउनलोड व प्रिंट।",
+                        docs: ["आधार कार्ड", "पासपोर्ट फोटो", "स्वप्रमाणित शपथ पत्र", "जमीन की रसीद या राशन कार्ड (आवश्यकतानुसार)", "मोबाइल नंबर"]
+                    },
+                    {
+                        name: "जन्म एवं मृत्यु प्रमाण पत्र",
+                        desc: "ऑनलाइन पंजीकरण व प्रिंट",
+                        facility: "अस्पताल व ब्लॉक स्तर के रिकॉर्ड के आधार पर ऑनलाइन फॉर्म सबमिशन व ट्रैकिंग।",
+                        docs: ["अस्पताल का डिस्चार्ज स्लिप / पर्ची", "माता-पिता/मृतक का आधार कार्ड", "आवेदक का पहचान पत्र", "ग्राम प्रधान या वार्ड पार्षद की रिपोर्ट"]
+                    },
+                    {
+                        name: "राशन कार्ड सेवाएं",
+                        desc: "नया नाम जोड़ना व स्टेटस चेक",
+                        facility: "नए राशन कार्ड का आवेदन, परिवार के सदस्यों का नाम जोड़ना/हटाना, ई-राशन कार्ड डाउनलोड।",
+                        docs: ["परिवार के मुखिया का आधार कार्ड व फोटो", "परिवार के सभी सदस्यों का आधार कार्ड", "आय प्रमाण पत्र", "बैंक पासबुक", "निवास प्रमाण"]
+                    },
+                    {
+                        name: "पासपोर्ट एवं ड्राइविंग लाइसेंस",
+                        desc: "ऑनलाइन आवेदन व स्लॉट बुकिंग",
+                        facility: "पासपोर्ट सेवा केंद्र के लिए स्लॉट बुकिंग, लर्निंग एवं परमानेंट लाइसेंस फॉर्म व फीस पेमेंट।",
+                        docs: ["मैट्रिक मार्कशीट (जन्म तिथि हेतु)", "आधार कार्ड व पैन कार्ड", "निवास प्रमाण पत्र", "मेडिकल फिटनेस फॉर्म (लाइसेंस हेतु)"]
+                    }
+                ]
+            },
+            {
+                category: "बैंकिंग और वित्तीय सेवाएं (DigiPay)",
+                items: [
+                    {
+                        name: "AEPS (आधार एटीएम)",
+                        desc: "आधार से पैसे निकालना व जमा करना",
+                        facility: "किसी भी बैंक खाते से फिंगरप्रिंट लगाकर तत्काल नकद निकासी, बैलेंस पूछताछ व मिनी स्टेटमेंट।",
+                        docs: ["बैंक से लिंक आधार कार्ड", "बैंक का नाम", "ग्राहक की बायोमेट्रिक (फिंगरप्रिंट) उपस्थिति"]
+                    },
+                    {
+                        name: "नया बैंक खाता खोलना",
+                        desc: "जीरो बैलेंस सेविंग अकाउंट",
+                        facility: "तत्काल बैंक खाता संख्या व IFSC प्राप्त करें, डेबिट कार्ड व चेकबुक सीधे पते पर।",
+                        docs: ["आधार कार्ड", "पैन कार्ड", "2 पासपोर्ट साइज फोटो", "आधार से लिंक मोबाइल नंबर"]
+                    },
+                    {
+                        name: "मनी ट्रांसफर (DMT)",
+                        desc: "देश के किसी भी बैंक में पैसे भेजें",
+                        facility: "तत्काल IMPS/NEFT के जरिए 24x7 किसी भी खाते में नकद से सीधे खाते में ट्रांसफर।",
+                        docs: ["भेजने वाले का मोबाइल नंबर", "प्राप्तकर्ता का खाता संख्या (A/C No)", "बैंक का IFSC कोड"]
+                    },
+                    {
+                        name: "बीमा सेवाएं (Insurance)",
+                        desc: "Life, Health व Vehicle बीमा",
+                        facility: "बाइक/कार का तत्काल थर्ड पार्टी व फर्स्ट पार्टी बीमा, स्वास्थ्य बीमा एवं जीवन बीमा पॉलिसी।",
+                        docs: ["वाहन की आरसी (RC)", "पुरानी बीमा पॉलिसी (यदि हो)", "आधार व पैन कार्ड (व्यक्तिगत बीमा हेतु)"]
+                    },
+                    {
+                        name: "पेंशन योजनाएं",
+                        desc: "PM-SYM एवं अटल पेंशन योजना",
+                        facility: "60 वर्ष के बाद निश्चित मासिक पेंशन के लिए सरकारी योजनाओं में सीधा नामांकन।",
+                        docs: ["आधार कार्ड", "बचत बैंक खाता पासबुक", "नॉमिनी (वारिस) का विवरण", "मोबाइल नंबर"]
+                    }
+                ]
+            },
+            {
+                category: "कृषि और कल्याणकारी योजनाएं",
+                items: [
+                    {
+                        name: "PM किसान सम्मान निधि",
+                        desc: "नया रजिस्ट्रेशन एवं e-KYC",
+                        facility: "सालाना 6000 रुपये सहायता राशि हेतु पंजीकरण, बायोमेट्रिक e-KYC, लैंड सीडिंग स्टेटस सुधार।",
+                        docs: ["आधार कार्ड", "जमीन का खतियान / चालू रसीद (LPC)", "बैंक खाता पासबुक", "लिंक मोबाइल नंबर"]
+                    },
+                    {
+                        name: "आयुष्मान भारत कार्ड (Golden Card)",
+                        desc: "5 लाख तक का फ्री इलाज कार्ड",
+                        facility: "पात्र परिवारों का आयुष्मान लिस्ट में नाम चेक करना, तत्काल ई-केवाईसी व पीवीसी कार्ड प्रिंट।",
+                        docs: ["राशन कार्ड (पात्रता सूची में नाम)", "आधार कार्ड", "मोबाइल नंबर (OTP सत्यापन हेतु)"]
+                    },
+                    {
+                        name: "ई-श्रम (e-Shram) कार्ड",
+                        desc: "असंगठित क्षेत्र के कामगारों का पंजीकरण",
+                        facility: "श्रमिकों के लिए सरकारी बीमा और कल्याणकारी लाभ हेतु यूएएन (UAN) कार्ड निर्माण।",
+                        docs: ["आधार कार्ड", "बैंक पासबुक", "आधार लिंक एक्टिव मोबाइल नंबर", "आयु 16 से 59 वर्ष के बीच"]
+                    }
+                ]
+            },
+            {
+                category: "उपयोगिता बिल और अन्य सेवाएं",
+                items: [
+                    {
+                        name: "बिजली, पानी और गैस बिल",
+                        desc: "तत्काल बिल भुगतान व रसीद",
+                        facility: "बिना लाइन में लगे तत्काल भुगतान की पक्की डिजिटल रसीद प्राप्त करें।",
+                        docs: ["उपभोक्ता संख्या (CA Number / Consumer ID)", "पुराना बिल"]
+                    },
+                    {
+                        name: "मोबाइल एवं DTH रिचार्ज",
+                        desc: "सभी कंपनियों के रिचार्ज उपलब्ध",
+                        facility: "Jio, Airtel, Vi, Tata Play, Dish TV आदि के सभी प्लान और ऑफर की जानकारी के साथ रिचार्ज।",
+                        docs: ["मोबाइल नंबर या DTH सब्सक्राइबर आईडी"]
+                    },
+                    {
+                        name: "ट्रेन, बस और फ्लाइट टिकट",
+                        desc: "आईआरसीटीसी अधिकृत टिकट बुकिंग",
+                        facility: "कन्फर्म टिकट बुकिंग, तत्काल कोटा, बोर्डिंग स्टेशन बदलना व कैंसिलेशन रिफंड।",
+                        docs: ["यात्रियों के नाम, आयु व पहचान पत्र", "यात्रा की तिथि व स्टेशन विवरण", "मोबाइल नंबर"]
+                    },
+                    {
+                        name: "ऑनलाइन फॉर्म व रिजल्ट प्रिंट",
+                        desc: "सरकारी नौकरी, एडमिट कार्ड व एडमिशन",
+                        facility: "सभी प्रतियोगी परीक्षाओं (SSC, Railway, Police आदि) का फॉर्म भरना, आंसर की, रिजल्ट व रंगीन प्रिंट।",
+                        docs: ["शैक्षणिक प्रमाण पत्र (मार्कशीट)", "फोटो व हस्ताक्षर", "जाति/निवास प्रमाण (आरक्षण हेतु)", "ईमेल व मोबाइल"]
+                    }
+                ]
+            }
+        ];
+
+        function renderServices(filter = "") {
+            const container = document.getElementById("servicesContainer");
+            container.innerHTML = "";
+
+            servicesData.forEach(cat => {
+                const filteredItems = cat.items.filter(item => 
+                    item.name.toLowerCase().includes(filter.toLowerCase()) || 
+                    item.desc.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filteredItems.length > 0) {
+                    const section = document.createElement("section");
+                    
+                    const title = document.createElement("h2");
+                    title.className = "category-title";
+                    title.textContent = cat.category;
+                    section.appendChild(title);
+
+                    const grid = document.createElement("div");
+                    grid.className = "grid";
+
+                    filteredItems.forEach(item => {
+                        const card = document.createElement("div");
+                        card.className = "card";
+                        card.onclick = () => openModal(item);
+                        card.innerHTML = `
+                            <div>
+                                <h3>${item.name}</h3>
+                                <p>${item.desc}</p>
+                            </div>
+                            <span class="card-btn">विवरण व दस्तावेज़ देखें &rarr;</span>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    section.appendChild(grid);
+                    container.appendChild(section);
+                }
+            });
+        }
+
+        function openModal(item) {
+            document.getElementById("modalTitle").innerText = item.name;
+            document.getElementById("modalFacility").innerText = item.facility;
+            
+            const docsList = document.getElementById("modalDocs");
+            docsList.innerHTML = "";
+            item.docs.forEach(doc => {
+                const li = document.createElement("li");
+                li.innerText = doc;
+                docsList.appendChild(li);
+            });
+
+            document.getElementById("serviceModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("serviceModal").style.display = "none";
+        }
+
+        function closeModalOnOutsideClick(e) {
+            if (e.target.id === "serviceModal") {
+                closeModal();
+            }
+        }
+
+        function filterServices() {
+            const val = document.getElementById("searchInput").value;
+            renderServices(val);
+        }
+
+        // Initial render
+        renderServices();
+    </script>
+</body>
+  </html>
